@@ -1,10 +1,20 @@
 var core = require('kaman-core')
 var Promise = require('bluebird')
 var radio = require('backbone.radio')
-var config = radio.channel('KamanApp').request('config');
 var views = require('./views')
 
+var config = radio.channel('KamanApp').request('config');
+
+
 var notify = $.notify
+
+
+
+
+var MainView =views.layouts.Default.extend({
+
+});
+
 
 var UiObject = Marionette.Object.extend({
 
@@ -45,8 +55,8 @@ var UiObject = Marionette.Object.extend({
             });
     },
 
-    MainView: views.layouts.Default.extend({}),
-    mainView: new views.layouts.Default(),
+
+    mainView:new MainView(),//(function(){return   new MainView({langSource:this.langSource}) })() ,
     kamanInit: function () {
         return core.Functions.backboneOptsAsProps(this)
     },
@@ -56,7 +66,7 @@ var UiObject = Marionette.Object.extend({
         if (view && view instanceof Backbone.View) {
             this.mainView = view
         } else {
-            this.mainView = new this.MainView()
+            this.mainView = new  new MainView(),
             console.warn(this.name + ':\ndefault layout view is seted as main view')
         }
         return this.mainView
@@ -65,7 +75,7 @@ var UiObject = Marionette.Object.extend({
         this.kamanInit()
             .then(function () {
                 if (config.get('debug'))
-                    console.log(this.name + ' object initializing', )
+                    console.log(this.name + ' object initializing' )
 
 
             }.bind(this))

@@ -1,5 +1,3 @@
-var layouts={
-    'Default':require('./default.view.js')
+module.exports = {
+    'Default': require('./default/default.view.js')
 }
-
-module.exports = layouts
