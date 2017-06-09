@@ -46,10 +46,11 @@ var DefaultLayoutView = core.View.extend({
     hide_modal:function(){
         return this.ui.modal.modal('hide')
     },
-    /*initialize:function(){
-        console.log(this.getChannel());
+    initialize:function(){
+        
         this.kappInit();
-    }*/
+        
+    },
     onRender:function(){
 
 
