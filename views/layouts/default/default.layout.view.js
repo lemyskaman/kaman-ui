@@ -17,7 +17,7 @@ var DefaultLayoutView = core.View.extend({
     },
     */
     
-    name:'sbadmin2 default layout view',
+    
     tagName: 'div',
     id: 'wrapper',
     template: _.template(MainViewTemplate),
@@ -49,6 +49,7 @@ var DefaultLayoutView = core.View.extend({
     initialize:function(){
         
         this.kappInit();
+        console.log(this.name,this.langSource)
         
     },
     onRender:function(){

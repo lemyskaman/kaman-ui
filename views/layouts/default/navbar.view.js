@@ -4,8 +4,9 @@
 
 var core = require('kaman-core');
 var radio = require('backbone.radio');
-var config = radio.channel('KamanApp').request('config');
+var config = radio.channel('kaman:app').request('config');
 var NavbarHeaderView = require('./navbar.header.view');
+var Sidebar = require('./navbar.sidebar.view');
 /*NAVBAR VIEW for sbadmin default layout
 this view particualry holds the header at left, toplink at right and side bar as app main menu
  */
@@ -35,7 +36,7 @@ module.exports = core.View.extend({
         console.log('nav bar view render called',this.regions)
 
             this.showChildView('navbarheader', new NavbarHeaderView({langSource:this.langSource}) );
-
+             this.showChildView('sidebar', new Sidebar({}))
         /*
          this.showChildView('navbarHeader', new HeaderView());
          this.showChildView('sidebar', new Sidebar({

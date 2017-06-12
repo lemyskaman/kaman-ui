@@ -3,81 +3,86 @@ var Promise = require('bluebird')
 var radio = require('backbone.radio')
 var views = require('./views')
 var Marionette = require('backbone.marionette')
-var config = radio.channel('KamanApp').request('config');
+var config = radio.channel('kaman:app').request('config');
 
 
 var notify = $.notify
 
-
-
-
-
 var UiObject = Marionette.Object.extend({
 
 
-    channelName: 'KamanUi',
+  channelName: 'kaman:ui',
 
-    radioRequests: {
+  radioRequests: {
 
-        'bootstrap-notify': notify,
-        'notify': 'uiNotify',
-        'modal:set': 'set_modal',
-        'modal:show': function () { this.mainView.show_modal() },//as the mechanism to show the modal is part of the mainview
-        'modal:hide': function () { this.mainView.hide_modal() }//also the machanis to hide it is part of the mainview
+    'bootstrap-notify': notify,
+    'notify': 'uiNotify',
 
-    },
-    set_modal: function (title, body) { // as modal should be cosntructed from the mainview holder object
+    'navbar:sidebar:item:click': '_sidebarMenuItemClick',
 
-        return this.mainView.set_modal(
-            views.components.Modal.extend({
-                bodyView: body,
-
-            })
-        ).ui.label.html(title)
+    'modal:set': 'set_modal',
+    'modal:show': function() {
+      this.mainView.show_modal()
+    }, //as the mechanism to show the modal is part of the mainview
+    'modal:hide': function() {
+      this.mainView.hide_modal()
+    } //also the machanis to hide it is part of the mainview
 
 
-    },
+  },
+  set_modal: function(title, body) { // as modal should be cosntructed from the mainview holder object
 
-    uiNotify: function (message, type) {
+    return this.mainView.set_modal(
+      views.components.Modal.extend({
+        bodyView: body,
 
-        notify(
-            {
-                message: message,
-                allow_dismiss: true
-            },
-            {
-                delay: '5000',
-                type: type
-            });
-    },
+      })
+    ).ui.label.html(title)
 
 
-    mainView: new views.layouts.Default({
+  },
 
-    }),//(function(){return   new MainView({langSource:this.langSource}) })() ,
+  uiNotify: function(message, type) {
 
-    set_mainView: function (view) {
-        if (config.get('debug'))
-            console.log(this.name + ':\nsetting main View for ')
-        if (view && view instanceof Backbone.View) {
-            this.mainView = view
-        } else {
-            this.mainView = new new MainView(),
-                console.warn(this.name + ':\ndefault layout view is seted as main view')
-        }
-        return this.mainView
-    },
-    kamanInit: function () {
-        this.mergeOptions(this.options, _.keys(this.options))
-    },
-    initialize: function () {
+    notify({
+      message: message,
+      allow_dismiss: true
+    }, {
+      delay: '5000',
+      type: type
+    });
+  },
 
-        this.kamanInit()
-        if (config.get('debug'))
-            console.log(this.name + ' object initializing')
-
-
+  _sidebarMenuItemClick:function(item){
+   this.appChannel.request('module:show',item.model)
+  },
+  _MainView: views.layouts.Default.extend({}),
+  //will allow to people change the main view
+  set_mainView: function(view) {
+    if (config.get('debug'))
+      console.log(this.name + ':\nsetting main View for ')
+    if (view && view instanceof Backbone.View) {
+      this.mainView = view
+    } else {
+      this.mainView = new this._MainView({
+          name: 'kaman UI  default layout view',
+          langSource: this.langSource
+        }),
+        console.warn(this.name + ':\ndefault layout view is seted as main view')
     }
+    return this.mainView
+  },
+  kamanInit: function() {
+    this.mergeOptions(this.options, _.keys(this.options))
+  },
+  initialize: function() {
+
+    this.kamanInit()
+    if (config.get('debug'))
+      console.log(this.name, this.langSource)
+    this.set_mainView();
+
+  }
 
 })
 module.exports = UiObject
