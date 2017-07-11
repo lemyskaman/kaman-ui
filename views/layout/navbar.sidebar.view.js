@@ -2,29 +2,8 @@ var core = require('kaman-core');
 var radio = require('backbone.radio')
 var config = radio.channel('kaman:app').request('config');
 
-
-///data definitions
-var MenuItemModel = Backbone.Model.extend({
-  defaults: {
-    caption: ' - ',
-    action: 'test-action',
-    icon: 'fa-icon',
-    status:false
-
-  },
-  parse: function(payload) {
-    var toReturn = {};
-    toReturn.caption = payload.caption || ' - ';
-    toReturn.action = payload.action || 'test-action';
-    toReturn.icon = payload.icon || 'fa-icon';
-    toReturn.status=payload.status || false
-    return toReturn;
-  }
-});
-
-var SideMenuCollection = Backbone.Collection.extend({
-  model: MenuItemModel,
-});
+var uiCollections=require('./../../collections');
+var SideMenuCollection = uiCollections.menu;
 
 //views definition
 var SideMenuItemView = core.View.extend({
@@ -66,6 +45,7 @@ var SideMenuItemView = core.View.extend({
 })
 
 var SideMenuView = Marionette.CollectionView.extend({
+  chanelName:'kaman:ui',
   id: 'side-menu',
   tagName: 'ul',
   className: 'nav',
@@ -77,16 +57,24 @@ var SideMenuView = Marionette.CollectionView.extend({
 
 
 module.exports = core.View.extend({
-  channelName: 'ui',
-  collection: new SideMenuCollection([{}, {}]),
+
+  channelName: 'kaman:ui',
+  collection: new SideMenuCollection([{},{}]),
+
   tagName: 'div',
   className: 'sidebar-nav navbar-collapse collapse',
   template: _.template('<div id="menu"></div>'),
   replaceableRegions: {
     menu: '#menu'
   },
+  
   childViewEvents: {
     'item:click': 'itemClick'//felling the click on a side menu item
+  },
+  initialize:function(){
+    this.kappInit();
+    this.collection = Backbone.Radio.channel(this.channelName).request('menu');
+   // Backbone.Radio.channel(this.channelName).reply('navbar:sidebar:view:collection',function(){console.log('sside bar')})
   },
   itemClick: function(childView) {
 
@@ -95,11 +83,11 @@ module.exports = core.View.extend({
     _.each(this.collection.where({status:true}),function(e,k,l){
       e.set({status:false})
     },this)
-    radio.channel('kaman:ui').request('navbar:sidebar:item:click',childView)
+    radio.channel('kaman:ui').request('menu:item:click',childView)
   },
   onRender: function() {
     this.showChildView('menu', new SideMenuView({
-      collection: this.collection
+      collection:this.collection
     }))
   }
 

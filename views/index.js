@@ -1,5 +1,4 @@
 module.exports={
-    components:require('./components'),
-    layouts:require('./layouts')
-
+    Layout:require('./layout'),
+    components:require('./components')
 }
