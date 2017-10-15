@@ -16,10 +16,11 @@ var SideMenuItemView = core.View.extend({
   ui: {
     button: 'a'
   },
-  events: {
+  events: { //this is just to avoid normal behaviur on clik
     'click @ui.button': function(e) {
-      e.preventDefault()
-    } //just to avoid normal behaviur on lcik
+      e.preventDefault();
+      
+    } 
   },
   triggers: {
     'click a': 'item:click'
@@ -82,7 +83,8 @@ module.exports = core.View.extend({
     //find each item with a tru status and toggle it 
     _.each(this.collection.where({status:true}),function(e,k,l){
       e.set({status:false})
-    },this)
+    },this);
+    this.$el.collapse('hide')
     radio.channel('kaman:ui').request('menu:item:click',childView)
   },
   onRender: function() {
