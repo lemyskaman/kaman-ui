@@ -36,7 +36,7 @@ module.exports = core.View.extend({
         console.log('nav bar view render called',this.regions)
 
             this.showChildView('navbarheader', new NavbarHeaderView({langSource:this.langSource}) );
-             this.showChildView('sidebar', new Sidebar({sidebarMenuItems:this.sidebarMenuItems}))
+            this.showChildView('sidebar', new Sidebar({sidebarMenuItems:this.sidebarMenuItems}))
         /*
          this.showChildView('navbarHeader', new HeaderView());
          this.showChildView('sidebar', new Sidebar({

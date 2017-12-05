@@ -29,7 +29,7 @@ var DefaultLayoutView = core.View.extend({
     },
     replaceableRegions: {
         navbar: '#navbar',
-        page: '#page-wrapper'
+        pageWrapper: '#page-wrapper'
     },
     NavBar:NavBar,
     set_modal:function(Modal){
@@ -38,7 +38,9 @@ var DefaultLayoutView = core.View.extend({
         return this.getChildView('modal')
        
     },
-
+    renderContent:function(View){
+        this.showChildView('pageWrapper',new View());
+    },
     show_modal: function () {
         return this.ui.modal.modal('show');
        

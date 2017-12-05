@@ -84,7 +84,7 @@ module.exports = core.View.extend({
     _.each(this.collection.where({status:true}),function(e,k,l){
       e.set({status:false})
     },this);
-    this.$el.collapse('hide')
+    this.$el.collapse('hide')//auto collapse 
     radio.channel('kaman:ui').request('menu:item:click',childView)
   },
   onRender: function() {

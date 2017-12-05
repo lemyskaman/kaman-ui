@@ -7,9 +7,9 @@ var Marionette = require('backbone.marionette')
 var config = radio.channel('kaman:app').request('config');
 
 
-var uiCollections=require('./collections');
-var menu_collection = new uiCollections.menu([{},{},{}]);
- 
+var uiCollections = require('./collections');
+var menu_collection = new uiCollections.menu([{}, {}, {}]);
+
 
 var notify = $.notify
 
@@ -21,9 +21,12 @@ var UiObject = Marionette.Object.extend({
   radioRequests: {
 
     'bootstrap-notify': notify,
-    'notify': 'uiNotify', 
-    'menu':function(){
-       
+    'notify': 'uiNotify',
+
+    'modules:display:region': function () { return this.mainView.getRegion('page') },
+
+    'menu': function () {
+
       return menu_collection
     },
     'menu:item:click': '_sidebarMenuItemClick',
@@ -37,6 +40,13 @@ var UiObject = Marionette.Object.extend({
     } //also the machanis to hide it is part of the mainview
 
 
+  },
+
+  build_menu:function(){
+    return _.map(this.appChannel.request('modules'), function (v, k) {
+      return _.pick(v, 'caption', 'name', 'icon')
+    });
+  
   },
   set_modal: function (title, body) { // as modal should be cosntructed from the mainview holder object
 
@@ -64,8 +74,10 @@ var UiObject = Marionette.Object.extend({
   _sidebarMenuItemClick: function (item) {
     this.appChannel.request('module:show', item.model)
   },
-  _MainView: views.Layout.extend(),
-  //will allow to change the main view
+
+  _MainView: views.Layout.extend(),//adding the MainVIew as a constructor will provide the ability to change it and extend it
+
+
   set_mainView: function (view) {
     if (config.get('debug'))
       console.log(this.name + ':\nsetting main View for ')
@@ -86,15 +98,18 @@ var UiObject = Marionette.Object.extend({
   initialize: function () {
 
     this.kamanInit()
-    console.log('kamanui object menu elements',this.sidebarMenuItems)
+
+    console.log('kamanui object menu elements', this.sidebarMenuItems)
     if (config.get('debug'))
       console.log(this.name, this.langSource)
     this.set_mainView(new this._MainView({
-      
+
       name: 'kaman UI  default layout view',
       langSource: this.langSource
     }));
 
+    menu_collection.reset(this.build_menu())
+    
   }
 
 })
