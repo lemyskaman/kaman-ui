@@ -7,5 +7,6 @@ module.exports={
     Col:require('./col.view.js'),
     Row:require('./row.view'),
     Module:require('./module.view'),
-    Loren:require('./loren.view')
+    Loren:require('./loren.view'),
+    Panel:require('./panel.view')
 }

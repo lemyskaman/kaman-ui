@@ -1,7 +1,6 @@
 var views = {
     Layout:require('./layout'),
-    components:require('./components'),
-    elements:require('./elements')
+    components:require('./components')
 }
 
 module.exports=views;

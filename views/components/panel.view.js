@@ -39,9 +39,13 @@ var PanelView = core.View.extend({
 	changeLook:function(look){
 
 		var validLook =_.has(this._aviableLooks, look); 
-		if (validLook){
+		if (validLook && this.$el){
+			//remove the current look
+			this.$el.removeClass(this._aviableLooks[this.look])
 			this.look=look;
+			this.$el.addClass(this._aviableLooks[this.look])
 			this.render();
+			
 		}
 		return validLook
 
