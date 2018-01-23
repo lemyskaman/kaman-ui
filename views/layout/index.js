@@ -38,8 +38,13 @@ var DefaultLayoutView = core.View.extend({
         return this.getChildView('modal')
        
     },
-    renderContent:function(View){
-        this.showChildView('pageWrapper',new View());
+    renderContent:function(view){
+        if(this.showChildView('pageWrapper',view)){
+            return true
+        }else{
+            return false
+        };
+        
     },
     show_modal: function () {
         return this.ui.modal.modal('show');

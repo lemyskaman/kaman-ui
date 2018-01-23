@@ -3,7 +3,8 @@
 var ui = {
     Object:require('./kaman.ui'),
     views:require('./views'),
-    models:require('./models')
+    models:require('./models'),
+    behaviors:require('./behaviors')
 
 }
 

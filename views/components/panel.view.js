@@ -1,59 +1,39 @@
 var core = require('kaman-core');
 var ui = require('kaman-ui');
 var template = require('./templates/panel.view.template.html')
-
+var behaviors = require('./../../behaviors')
 
 
 var PanelView = core.View.extend({
-	name:'panel view',
-	className:'panel',
-	tagName:'div',
-	look:'Default',
-	_aviableLooks:{
-		'Default':'panel-default',
-		'Primary':'panel-primary',
-		'Success':'panel-success',
-		'Info':'panel-info',
-		'Warning':'panel-warning',
-		'Green':'panel-green',
-		'Yellow':'panel-yellow',
-		'Red':'panel-red',		
+	name: 'panel-view',
+	className: 'panel',
+	behaviors: {
+        actioncolor: behaviors.actioncolor.extend()
 	},
-	ui:{
-		heading:'.panel-heading',
-		body:'.panel-body',
-		footer:'.panel-footer'
-	},
-	regions:{
-		heading:'.panel-heading',
-		body:'.panel-body',
-		footer:'.panel-footer'
-	},
-	templateContext:{
-		heading:'heading',
-		body:'body',
-		footer:'body'
-	},
-	template:_.template(template),
+	lemys:"si",
+	tagName: 'div',
 	
-	changeLook:function(look){
 
-		var validLook =_.has(this._aviableLooks, look); 
-		if (validLook && this.$el){
-			//remove the current look
-			this.$el.removeClass(this._aviableLooks[this.look])
-			this.look=look;
-			this.$el.addClass(this._aviableLooks[this.look])
-			this.render();
-			
-		}
-		return validLook
+	ui: {
+		heading: '.panel-heading',
+		body: '.panel-body',
+		footer: '.panel-footer'
+	},
 
+	regions: {
+		heading: '.panel-heading',
+		body: '.panel-body',
+		footer: '.panel-footer'
 	},
-	onRender:function(){
-		this.$el.addClass(this._aviableLooks[this.look])
+	//replace
+	templateContext: {
+		heading: 'heading',
+		body: 'body',
+		footer: 'footer'
 	},
+	template: _.template(template),
+
 
 });
 
-module.exports=PanelView;
+module.exports = PanelView;

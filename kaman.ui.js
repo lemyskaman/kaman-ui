@@ -23,7 +23,7 @@ var UiObject = Marionette.Object.extend({
     'bootstrap-notify': notify,
     'notify': 'uiNotify',
 
-    'modules:display:region': function () { return this.mainView.getRegion('page') },
+//    'modules:display:region': function () { return this.mainView.getRegion('page') },
 
     'menu': function () {
 
@@ -52,7 +52,7 @@ var UiObject = Marionette.Object.extend({
 
     return this.mainView.set_modal(
       views.components.Modal.extend({
-        bodyView: body,
+        body: body
 
       })
     ).ui.label.html(title)
@@ -71,8 +71,8 @@ var UiObject = Marionette.Object.extend({
       });
   },
 
-  _sidebarMenuItemClick: function (item) {
-    this.appChannel.request('module:show', item.model)
+  _sidebarMenuItemClick: function (sidebarItemObject) {
+    this.appChannel.request('module:show', sidebarItemObject.model.get('name'))
   },
 
   _MainView: views.Layout.extend(),//adding the MainVIew as a constructor will provide the ability to change it and extend it
@@ -109,6 +109,9 @@ var UiObject = Marionette.Object.extend({
     }));
 
     menu_collection.reset(this.build_menu())
+
+    //listenning kaman:app notify event and bind it with this notifications for kaman:app
+    radio.channel("kaman:app").on("notify",this.uiNotify)
     
   }
 

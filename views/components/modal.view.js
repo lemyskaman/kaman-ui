@@ -5,7 +5,7 @@
 
 var _ = require('underscore');
 
-
+var Mn  = require('backbone.marionette')
 var core = require('kaman-core')
 
 
@@ -14,7 +14,7 @@ var ModalTemplate = require('./templates/modal.view.template.html');
 
 var ModalView = core.View.extend({
 
-    bodyVIew:{},
+    body:{},
     template: _.template(ModalTemplate),
 
     ui: {
@@ -27,8 +27,11 @@ var ModalView = core.View.extend({
         footer: '.modal-footer'
     },
     onRender:function(){
-        
-        this.showChildView('body', this.bodyView);
+        if (this.body instanceof Mn.View){
+            this.showChildView('body', this.bodyView);
+        }else{
+            this.ui.body.html(body)
+        }
     }
 
 
